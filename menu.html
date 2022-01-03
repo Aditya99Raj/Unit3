@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            height: 150px;
+            width: 150px
+        }
+
+        #dish {
+            margin-bottom: 10px;
+
+        }
+
+        #cart {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <input oninput="Dishlist()" type="text" id="dish">
+
+    <div id="list"></div>
+    <div id="cart">Cart Page </div>
+</body>
+
+</html>
+
+<script>
+    let list = document.getElementById("list");
+
+    async function Dishlist() {
+        try {
+            let dish = document.getElementById("dish").value;
+
+            let data = await fetch(`https://www.themealdb.com//api/json/v1/1/search.php?s=${dish}`)
+
+            let user = await data.json();
+            let response = user.meals
+
+           // console.log(user)
+            showDish(response)
+        } catch (err) {
+            console.log("err :", err)
+        }
+    }
+
+    // Dishlist()
+
+    function showDish(arr) {
+        list.innerHTML = ""
+
+        arr.forEach(function (el) {
+           
+            let name = document.createElement("p");
+            name.innerText = el.strMeal;
+
+            let image = document.createElement("img");
+            image.src = el.strMealThumb;
+
+            let price = document.createElement("p");
+            price.innerText = Math.floor(Math.random() * (500 - 100) + 100)
+
+            let button = document.createElement("button");
+            button.innerText = `Add to Cart`
+
+            button.addEventListener("click", addCart);
+
+            button.setAttribute("id", el.idMeal)
+
+            list.append(image, name, price, button)
+
+        })
+    }
+
+
+    
+    async function addCart(el) {
+        try {
+            console.log(el.target.id)
+            let item = (el.target.id)
+
+            let data = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${item}`)
+
+            let user = await data.json();
+
+         //   let resonse=user.meals
+localStorage.setItem("Dishdata" ,JSON.stringify(user))
+            console.log(user)
+           // console.log("here")
+            showCart(user)
+
+        } catch (err) {
+            console.log("err1 :", err)
+        }
+
+
+    }
+    let cart = document.getElementById("cart")
+    let count=0;
+
+    function showCart(el) {
+       // list.innerHTML=null;
+       // cart.innerHTML=null;
+
+        count++
+        console.log(count)
+      
+        let name = document.createElement("p");
+        name.innerText = el.strMeal;
+
+        let image = document.createElement("img");
+        image.src = "https://www.themealdb.com/images/media/meals/k420tj1585565244.jpg"
+
+        let price = document.createElement("p");
+        price.innerText = Math.floor(Math.random() * (500 - 100) + 100)
+
+        cart.append(image,name,price)
+
+      
+    }
+</script>
