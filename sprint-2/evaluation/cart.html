@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #dishlist{
+            height:500px;
+            border:500px;
+            border: 1px solid red;
+            margin-right: 50px;
+        }
+        img {
+            margin-top: 100px;
+            height:100px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div>
+        <div id="dishlist">Cart</div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    let dish = document.getElementById("dishlist")
+    let x = (localStorage.getItem("Dishdata"))
+    let y = (JSON.parse(x))
+
+    function display() {
+       
+             let p = document.createElement("p")
+             p.innerText=y.meals[0].strMeal
+
+             let image=document.createElement("img");
+             image.src=y.meals[0].strMealThumb
+
+            dish.append(image,p)
+        //  console.log(y)
+        // console.log()
+      
+       // console.log(y.meals[0])
+
+    }
+   // console.log(y)
+
+    display()
+</script>
